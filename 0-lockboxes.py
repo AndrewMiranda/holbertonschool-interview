@@ -1,17 +1,37 @@
 #!/usr/bin/python3
-# Lock Boxes Interview Algorithms
+"""
+LockBox Module
+-------
+This module houses the defs for
+recursing through the boxes
+"""
+from collections import OrderedDict
+
+
+def box_recurse(boxes, unlocked, box):
+    """
+    boxes: list of lockboxes
+    unlocked: list of keys
+    box: current box
+    """
+    if len(unlocked) == len(boxes):
+        return True
+    for key in boxes[box]:
+        if len(list(OrderedDict.fromkeys(boxes[box]))) == len(boxes):
+            return True
+        if key not in unlocked and key < len(boxes):
+            unlocked.append(key)
+            unlocked.sort()
+            if box_recurse(boxes, unlocked, key) is True:
+                return True
+    return False
 
 
 def canUnlockAll(boxes):
-    """Solves the problem"""
-    visited = [False for i in range(len(boxes))]
-    visited[0] = True
-    stack = [0]
-    while len(stack):
-        box = stack.pop(0)
-        for _box in boxes[box]:
-            if isinstance(_box, int) and _box >= 0 and _box < len(boxes)\
-              and not visited[_box]:
-                visited[_box] = True
-                stack.append(_box)
-    return all(visited)
+    """
+    creates empty list and starts
+    recursion at 0
+    """
+    unlocked = [0]
+    box = 0
+    return(box_recurse(boxes, unlocked, box))
