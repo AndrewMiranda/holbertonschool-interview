@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Lock Boxes Interview Algorithm
+# Lock Boxes Interview Algorithms
 
 
 def canUnlockAll(boxes):
