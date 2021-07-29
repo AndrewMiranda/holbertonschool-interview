@@ -1,53 +1,51 @@
 #include "lists.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 /**
- * insert_node - adds and sorts a new number
- * @head: pointer to pointer of first node of listint_t list
- * @number: integer to be included
- * Return: address of the new element or NULL if it fails
- *
- * Made by Facundo Diaz for Holberton School 2021
+ * insert_node - Inserts a number into a sorted singly linked list.
+ * @head: start of pointer
+ * @number: new node
+ * Return: address of the new element or NULL if it failed
  */
+
 listint_t *insert_node(listint_t **head, int number)
 {
-	int x = 0, guardar = 0;
-	listint_t *current, *ret;
+	listint_t *newNode;
+	listint_t *currentNode;
 
-	current = *head;
-	(void)guardar;
+	/* defining the start of the list */
+	currentNode = *head;
+	/* Allocate Memory to get a new Node*/
+	newNode = malloc(sizeof(listint_t));
 
-	if (current == NULL)
-		add_nodeint_end(head, number);
-	else
+	/**
+	 * Validate if newNode isn't Null
+	 *Then: assigne in first node the new node and next node is Null
+	 *Then validate if next posisition is null and value of new node is >
+	 *assigne a new value for the next node
+	 *if not go through position to find a value greater to be the newcurre
+	 *at last return de value of node or null if not
+	 *
+	 **/
+	if (newNode)
 	{
-		while (x == 0)
+		newNode->n = number;
+		newNode->next = NULL;
+		if (*head == NULL || (*head)->n >= newNode->n)
 		{
-			if (current == NULL)
-			{
-				add_nodeint_end(head, number);
-				return (current);
-			}
-			else if (number < current->n)
-				x = 1;
-			else
-			{
-				current = current->next;
-			}
+			newNode->next = *head;
+			*head = newNode;
 		}
-
-		while (current != NULL)
+		else
 		{
-			guardar = current->n;
-			current->n = number;
-			number = guardar;
-			current = current->next;
+			while (currentNode->next && currentNode->next->n < newNode->n)
+			{
+				currentNode = currentNode->next;
+			}
+			newNode->next = currentNode->next;
+			currentNode->next = newNode;
 		}
-		ret = current;
-
-		add_nodeint_end(head, number);
+		return (newNode);
 	}
-
-	free_listint(current);
-
-	return (ret);
+	return (NULL);
 }
