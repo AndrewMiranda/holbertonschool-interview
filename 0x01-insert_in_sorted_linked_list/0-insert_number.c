@@ -1,51 +1,50 @@
 #include "lists.h"
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 /**
- * insert_node - Inserts a number into a sorted singly linked list.
- * @head: start of pointer
- * @number: new node
- * Return: address of the new element or NULL if it failed
+ * insert_node - prints all elements of a listint_t list
+ * @head: pointer to head of list
+ * @number: Value of the new node
+ * Return: new node
  */
-
 listint_t *insert_node(listint_t **head, int number)
 {
-	listint_t *newNode;
-	listint_t *currentNode;
+	listint_t *new, *current;
 
-	/* defining the start of the list */
-	currentNode = *head;
-	/* Allocate Memory to get a new Node*/
-	newNode = malloc(sizeof(listint_t));
+	new = malloc(sizeof(listint_t));
+	if (new == NULL)
+		return (NULL);
 
-	/**
-	 * Validate if newNode isn't Null
-	 *Then: assigne in first node the new node and next node is Null
-	 *Then validate if next posisition is null and value of new node is >
-	 *assigne a new value for the next node
-	 *if not go through position to find a value greater to be the newcurre
-	 *at last return de value of node or null if not
-	 *
-	 **/
-	if (newNode)
+	current = *head;
+	new->n = number;
+	new->next = NULL;
+
+	if (*head == NULL)
 	{
-		newNode->n = number;
-		newNode->next = NULL;
-		if (*head == NULL || (*head)->n >= newNode->n)
-		{
-			newNode->next = *head;
-			*head = newNode;
-		}
-		else
-		{
-			while (currentNode->next && currentNode->next->n < newNode->n)
-			{
-				currentNode = currentNode->next;
-			}
-			newNode->next = currentNode->next;
-			currentNode->next = newNode;
-		}
-		return (newNode);
+		*head = new;
 	}
-	return (NULL);
+	else {
+		if (new->n < current->n)
+		{
+			new->next = *head;
+			*head = new;
+			return (new);
+		}
+
+		while (current->next != NULL)
+		{
+			if (new->n <= current->next->n)
+			{
+				new->next = current->next;
+				current->next = new;
+				break;
+			}
+			current = current->next;
+		}
+
+		if (current->next == NULL)
+			current->next = new;
+	}
+
+	return (new);
 }
