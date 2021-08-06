@@ -12,6 +12,7 @@
  * @left: Pointer to the left child node
  * @right: Pointer to the right child node
  */
+
 typedef struct binary_tree_s
 {
 	int n;
