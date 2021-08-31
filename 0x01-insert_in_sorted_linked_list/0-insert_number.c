@@ -1,51 +1,30 @@
-#include "lists.h"
-#include <stdlib.h>
 #include <stdio.h>
-/**
- * insert_node - prints all elements of a listint_t list
- * @head: pointer to head of list
- * @number: Value of the new node
- * Return: new node
- */
+#include <stdlib.h>
+#include "lists.h"
+
 listint_t *insert_node(listint_t **head, int number)
 {
-	listint_t *new, *current;
+	listint_t *temp = *head;
+	listint_t *new = malloc(sizeof(listint_t));
 
-	new = malloc(sizeof(listint_t));
-	if (new == NULL)
-		return (NULL);
+    	if (new == NULL)
+        	return (NULL);
 
-	current = *head;
 	new->n = number;
 	new->next = NULL;
 
-	if (*head == NULL)
+	if (*head == NULL || temp->n >= number)
 	{
+		new->next = *head;
 		*head = new;
 	}
 	else
-    {
-		if (new->n < current->n)
-		{
-			new->next = *head;
-			*head = new;
-			return (new);
-		}
-
-		while (current->next != NULL)
-		{
-			if (new->n <= current->next->n)
-			{
-				new->next = current->next;
-				current->next = new;
-				break;
-			}
-			current = current->next;
-		}
-
-		if (current->next == NULL)
-			current->next = new;
+	{
+		while(temp->next != NULL && temp->next->n <= number)
+			temp = temp->next;
+		if (temp->next != NULL)
+			new->next = temp->next;
+		temp->next = new;
 	}
-
-	return (new);
+	return new;
 }
