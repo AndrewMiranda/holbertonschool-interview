@@ -1,50 +1,73 @@
 #include "slide_line.h"
-
 /**
- * slide_line - Slide and merge an array of ints
- * @line: Array to slide
- * @size: Size of the array
- * @direction: Direction in which to slide the array
- * Return: 0 on failure otherwise 1
+ * slide_line - Reproduce the 2048 game(NSFW !!)
+ * @line: Points to an array of integers containing
+ * @size: Elements
+ * @direction: Line Direction
+ * Return: 1 on success, or 0 upon on failure
  */
 
 int slide_line(int *line, size_t size, int direction)
 {
-	size_t aux, mark = 0, p1 = 0, p2 = 1, t1, t2;
+	int index = 0, index_2 = 0, size_int = size, tmp = 0;
 
-	if (direction != SLIDE_LEFT && direction != SLIDE_RIGHT)
+	if (line == NULL || (direction != 0 && direction != 1))
 		return (0);
-	p1 = (direction == SLIDE_RIGHT) ? size - 1 : p1;
-	p2 = (direction == SLIDE_RIGHT) ? size - 2 : p2;
 
-	for (t1 = 0; t1 < size; t1++)
-	{       aux = p2;
-		mark = 0;
-		for (t2 = t1 + 1; t2 < size; t2++)
+	if (direction == 0)
+	{
+		for (index = 0; index < size_int; index++)
 		{
-			if (line[p1] != 0 && line[p2] == line[p1])
-			{	line[p1] = line[p1] * 2;
-				line[p2] = 0;
-				break; }
-
-			if (line[p1] == 0 && line[p2] != 0)
-			{	line[p1] = line[p2];
-				line[p2] = 0;
-				mark = 1;
-				p2 = aux;
-				t1--;
-				break; }
-
-			if (line[p2] != 0)
-				break;
-			direction == SLIDE_LEFT ? p2++ : p2--;
+			if (line[index] == line[index + 1] && line[index] != 0)
+			{
+				line[index_2++] = line[index] + line[index + 1],
+				index++;
+				line[index_2] = 0;
+			}
+			else if (line[index] != 0)
+			{
+				if (tmp == line[index])
+				{
+					line[--index_2] = tmp * 2;
+					index_2++;
+					tmp = 0;
+				}
+				else
+					line[index_2++] = line[index], tmp =
+					line[index];
+			}
 		}
-		if (line[p1] == 0)
-			break;
-		if (mark == 0)
-		{	p1 = (direction == SLIDE_LEFT) ? p1 + 1 : p1;
-			p1 = (direction == SLIDE_RIGHT) ? p1 - 1 : p1;
-			p2 = (direction == SLIDE_LEFT) ? p1 + 1 : p2;
-			p2 = (direction == SLIDE_RIGHT) ? p1 - 1 : p2; }
+		for (index = index_2; index < size_int; index++)
+			line[index] = 0;
+	}
+	else
+	{
+		index_2 = size - 1;
+
+		for (index = size_int - 1; index > -1; index--)
+		{
+			if (line[index] == line[index - 1] && line[index] != 0)
+			{
+				line[index_2--] = line[index] +
+				line[index - 1], index--;
+				line[index_2] = 0;
+			}
+			else if (line[index] != 0)
+			{
+				if (tmp == line[index])
+				{
+					line[++index_2] = tmp * 2;
+					index_2--;
+					tmp = 0;
+				}
+				else
+					line[index_2--] = line[index],
+					tmp = line[index];
+			}
+		}
+		for (index = index_2; index > -1; index--)
+			line[index] = 0;
 	}
 	return (1);
+}
+
